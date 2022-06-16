@@ -1,12 +1,29 @@
 import React from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import { Navbar } from "./components";
+import { Routes, Route, Link } from "react-router-dom";
+import { Navibar, LandingPage, Dashboard, UserProfile } from "./components";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   return (
     <div className="app">
-      <div className="navbar"><Navbar/></div>
-      <div className="main"></div>
+      <Navibar />
+      <div className="main">
+        <div className="routes">
+          <Routes>
+            <Route exact path="/" element={<LandingPage />} />
+            <Route exact path="/hoomans" element={<Dashboard />} />
+            <Route exact path="/hooman/:hoomanId" element={<UserProfile />} />
+          </Routes>
+        </div>
+      </div>
+      <div className="footer">
+        <h3 className="footer-slogan">
+          Hooman
+          <br />
+          All rights reserved.
+        </h3>
+      </div>
     </div>
   );
 };
