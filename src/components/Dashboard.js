@@ -1,7 +1,16 @@
 import React from "react";
+import { useGetUsersQuery } from "../services/randomUserApi";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  const { data, isFetching } = useGetUsersQuery();
+
+  console.log(data);
+  
+  return (
+    <>
+      <div></div>
+    </>
+  );
 };
 
 export default Dashboard;
