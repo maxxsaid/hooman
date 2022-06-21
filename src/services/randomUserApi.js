@@ -7,7 +7,7 @@ export const randomUserApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => `${baseUrl}?results=100`,
+      query: () => `${baseUrl}?page=3&results=10&seed=abc`,
     }),
   }),
 });
