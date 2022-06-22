@@ -1,43 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetUsersQuery } from "../services/randomUserApi";
 
 const Dashboard = () => {
-  const { data, isFetching } = useGetUsersQuery();
+  const { data: usersList, isFetching } = useGetUsersQuery();
 
-  console.log(data);
+  
+  const [users, setUsers] = useState([]);
+  console.log(users);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const globalUsers = data?.results;
-
-  console.log(globalUsers);
-
+  useEffect(() => {
+    const filteredUsers = usersList?.results?.filter(
+      (user) =>
+        user.name.first.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.name.last.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setUsers(filteredUsers);
+  }, [usersList, searchTerm]);
   if (isFetching) return "Loading...";
 
   return (
     <>
+      <div className="search-user">
+        <input
+          placeholder="Search User"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       <div className="container">
-        <div className="row">
-          <div className="col-md-6 mx-auto d-grid gap-3">
-            {globalUsers.map((user, index) => {
-              return (
-                <Link to={`/hooman/${index}`} className="card col-md-6 mx-auto my-2 p-2 bg-light border" key={index}>
-                  <div
-                    className="mx-auto text-center"
-                  >
-                    <img
-                      src={user.picture.thumbnail}
-                      alt="user"
-                      className="card-image"
-                    />
+        <div className="row row-cols-2 row-cols-lg-6 g-2 g-lg-1">
+          {users?.map((user, index) => {
+            return (
+              <Link to={`/hooman/${index}`} className="card col" key={index}>
+                <div className="text-center p-3">
+                  <img
+                    src={user.picture.large}
+                    alt="user"
+                    className="card-image p-1"
+                  />
 
-                    <div className="card-title">
-                      {user.name.first} {user.name.last}
-                    </div>
+                  <div className="card-title">
+                    {user.name.first} {user.name.last}
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </>
